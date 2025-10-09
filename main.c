@@ -1,62 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <math.h>
-#define SIZE 10
-struct stack
+#define SIZE 5
+int top=-1;
+int data[SIZE];
+void push(int item)
 {
-    int top;
-    float data[SIZE];
-};
-typedef struct stack STACK;
-void push(STACK *s,float item)
-{
-    s->data[++(s->top)]=item;
-}
-float pop(STACK *s)
-{
-    return s->data[(s->top)--];
-}
-float compute(float opr1,char symbol,float opr2)
-{
-    switch(symbol)
+    if(top==SIZE-1)
+        printf("\n stack overflow");
+    else
     {
-        case '+':return opr1+opr2;
-        case '-':return opr1+opr2;
-        case '*':return opr1+opr2;
-        case '/':return opr1+opr2;
-        case '^':return pow(opr1,opr2);
+        top=top+1;
+        data[top]=item;
     }
 }
-float evaluatepostfix(STACK *s,char postfix[20])
+void pop()
 {
+    if(top==-1)
+        printf("\n stack underflow");
+    else
+    {
+
+        printf("\n element pop is %d",data[top]);
+        top=top-1;
+    }
+}
+void display()
+{
+
     int i;
-    float opr1,opr2,res;
-    char symbol;
-    for(i=0;postfix[i]!='\0';i++)
+    if(top==-1)
+        printf("\n stack is empty");
+    else
     {
-        symbol=postfix[i];
-        if(isdigit(symbol))
-            push(s,symbol-'0');
-        else
-        {
-            opr2=pop(s);
-            opr1=pop(s);
-            res=compute(opr1,symbol,opr2);
-            push(s,res);
-        }
+        printf("\n stack content are \n");
+        for(i=top;i>=0;i--)
+            printf("%d\n",data[i]);
     }
-    return pop(s);
 }
 int main()
 {
-    char postfix[20];
-    STACK s;
-    s.top=-1;
-    float res;
-    printf("\n read postfix expression:\n");
-    scanf("%s",postfix);
-    res=evaluatepostfix(&s,postfix);
-    printf("\n the final result is %f",res);
+    int ch,item;
+    for(;;)
+    {
+        printf("\n 1.push");
+        printf("\n 2.pop");
+        printf("\n 3.display");
+        printf("\n read choice:");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:printf("\n read element to be pushed:");
+            scanf("%d",&item);
+            push(item);
+            break;
+            case 2:pop();
+            break;
+            case 3:display();
+            break;
+            default:exit(0);
+        }
+    }
     return 0;
 }
